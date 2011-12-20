@@ -1,3 +1,5 @@
+import sbt._
+
 name := "ScalpGLPK"
 
 version := "0.1-SNAPSHOT"
@@ -17,3 +19,16 @@ resolvers ++= Seq("snapshots" at "http://scala-tools.org/repo-snapshots",
 		  "XypronRelease" at "http://rsync.xypron.de/repository")
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
+
+// Prevent sbt to run test in parallel.
+parallelExecution in Test := false
+
+// Prevent Specs 2 from running specs in parallel.
+testOptions in Test += Tests.Argument("sequential")
+
+
+
+
+
+
+
