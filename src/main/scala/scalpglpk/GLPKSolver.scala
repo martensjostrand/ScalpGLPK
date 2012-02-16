@@ -150,10 +150,11 @@ object GLPKSolver extends ProblemSolver{
     var variableSolutionIndex = 0;
     val variableValues = p.variables.map{variable => 
       variableSolutionIndex = variableSolutionIndex + 1
+      val columnValue = GLPK.glp_mip_col_val(lp, variableSolutionIndex)
       variable match { 
-	case BinaryVariable() => BinaryVariableValue(false);
-	case RealVariable() => RealVariableValue(GLPK.glp_mip_col_val(lp, variableSolutionIndex))
-	case IntegerVariable() => IntegerVariableValue(GLPK.glp_mip_col_val(lp, variableSolutionIndex).toInt)
+	case BinaryVariable() => BinaryVariableValue(if (columnValue == 0) false else true)
+	case RealVariable() => RealVariableValue(columnValue)
+	case IntegerVariable() => IntegerVariableValue(columnValue.toInt)
       }
       // GLPK.glp_mip_col_val(lp, c.getColumnNumber())
     }
