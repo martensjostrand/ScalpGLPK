@@ -20,15 +20,12 @@ object GLPKSolver extends ProblemSolver{
       GLPK.glp_set_col_name(lp, variableIndex, "x" + variableIndex)
       val columnKind = variable match { 
 	case IntegerVariable() => { 
-	  println("creating an integer variable from " + variable)
 	  GLPKConstants.GLP_IV
 	}
 	case RealVariable() => { 
-	  println("creating an continious variable from " + variable)
 	  GLPKConstants.GLP_CV
 	}
 	case BinaryVariable() => { 
-	  println("creating an binary variable from " + variable)
 	  GLPKConstants.GLP_BV
 	}
 	case someVariable => throw new IllegalArgumentException("Unknown variable: " + someVariable)
@@ -85,19 +82,15 @@ object GLPKSolver extends ProblemSolver{
     GLPK.glp_add_rows(lp, p.constraints.size)
     var constraintIndex = 1;
     p.constraints.foreach{ constraint =>
-      println("Creating constraints from " + constraint)
       GLPK.glp_set_row_name(lp, constraintIndex, "c" + constraintIndex)
       constraint.constraintType match { 
 	case ConstraintType.Eq => {
-	  println("Setting constraint type to GLP_FX")
 	  GLPK.glp_set_row_bnds(lp, constraintIndex, GLPKConstants.GLP_FX, constraint.rhs, constraint.rhs)
 	}
 	case ConstraintType.LT => {
-	  println("Setting constraint type to GLP_UP")
 	  GLPK.glp_set_row_bnds(lp, constraintIndex, GLPKConstants.GLP_UP, 0.0,  constraint.rhs)
 	}
 	case ConstraintType.GT => {
-	  println("Setting constraint type to GLP_LO")
 	  GLPK.glp_set_row_bnds(lp, constraintIndex, GLPKConstants.GLP_LO, constraint.rhs, 0.0)
 	}
       }
@@ -141,8 +134,6 @@ object GLPKSolver extends ProblemSolver{
     iocp.setMsg_lev(GLPKConstants.GLP_MSG_ALL)
     GLPK.glp_init_iocp(iocp);
     iocp.setPresolve(GLPKConstants.GLP_ON);
-
-    GLPK._glp_lpx_print_prob(lp, "theProblem.txt")
 
     val returnValue  = GLPK.glp_intopt(lp, iocp);
     val optimum = GLPK.glp_mip_obj_val(lp)

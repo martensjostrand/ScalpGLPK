@@ -21,7 +21,6 @@ class GLPKSpec extends Specification {
            0.0 <= x2  integer""" in { 
 	     //  Create problem    
 	     val lp = GLPK.glp_create_prob();
-	     System.out.println("Problem created");
 	     GLPK.glp_set_prob_name(lp, "myProblem");
 	     
 	     //  Define columns
@@ -78,7 +77,6 @@ class GLPKSpec extends Specification {
     "Do it again" in { 
       	     //  Create problem    
 	     val lp = GLPK.glp_create_prob();
-	     System.out.println("Problem created");
 	     GLPK.glp_set_prob_name(lp, "myProblem");
 	     
 	     //  Define columns
